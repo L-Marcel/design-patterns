@@ -1,34 +1,55 @@
 package app.persons;
 
 import java.time.Duration;
+import java.util.Optional;
 
 import app.tasks.Task;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
-@Setter
 public class TemporaryWorker extends Worker {
-    private Duration duration;
+    private Optional<Duration> duration;
 
     public TemporaryWorker(String name, Duration duration) {
         super(name);
-        this.duration = duration;
+        this.duration = Optional.of(duration);
     };
 
     @Override
     public void setTask(Task task) {
         super.setTask(task);
     };
+
+    public void setDuration(Duration duration) {
+        if(duration != null) {
+            this.duration = Optional.of(duration);
+        } else {
+            this.duration = Optional.empty();
+        };
+    };
+
+    public Optional<Duration> getDuration() {
+        return this.duration;
+    };
+
+    private void decrementDuration() {
+        this.duration = this.duration.map((Duration duration) -> {
+            return duration.minusDays(1);
+        });
+    };
+
+    private void clearTaskIfWorkEndded() {
+        this.duration.ifPresent((Duration duration) -> {
+            if(duration.toDays() < 1) {
+                this.setTask(null);
+            };
+        });
+    };
     
     @Override
     public void work() {
         super.work();
-
-        if(this.duration != null && this.duration.toDays() > 0) {
-            this.duration = this.duration.minusDays(1);
-        } else {
-            this.setTask(null);
-        };
+        this.decrementDuration();
+        this.clearTaskIfWorkEndded();
     };
 };
