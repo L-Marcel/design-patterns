@@ -11,7 +11,7 @@ public class NotificationEvent extends Event {
     public NotificationEvent(String title, String description) {
         super(title);
         this.description = description;
-    }
+    };
 
     @Override
     public void run() {

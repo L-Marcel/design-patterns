@@ -2,7 +2,6 @@ package app.clients;
 
 import java.time.Duration;
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 import app.errors.InvalidEventTime;
 import app.events.Event;
