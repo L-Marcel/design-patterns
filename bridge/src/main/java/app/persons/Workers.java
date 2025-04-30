@@ -18,6 +18,7 @@ public class Workers {
     public void work() {
         for(Worker worker : this.workers) {
             worker.work();
+            System.out.println("");
         };
     };
 
